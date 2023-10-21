@@ -8,8 +8,28 @@ packages = [{ include = "cpgdata", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+click = "^8.1"
+pydantic = "^2.4"
+polars = "^0.19"
+pyarrow = "^13.0"
+awscli = { git = "https://github.com/aws/aws-cli.git@014d436d8728f202afaa88555e80a89a4b14bffd" }
 
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4"
+black = "^23.10"
+ruff = "^0.1"
+build = "^1.0"
+twine = "^4.0"
+
+
+[tool.poetry.scripts]
+cpg = "cpgdata.cli:main"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+select = ["ANN", "C90", "D", "E", "F", "I", "N", "NPY", "PTH", "TID", "UP", "W"]
+exclude = ["vendor"]
