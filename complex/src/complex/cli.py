@@ -7,9 +7,3 @@ import click
 def main() -> None:
     """Complex CLI."""
     pass
-
-
-@click.group
-def awscli() -> None:
-    """AWS CLI."""
-    pass
