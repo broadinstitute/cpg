@@ -1,0 +1,218 @@
+key = {
+  dataset_id
+  ~ sep
+  ~ source_id?
+  ~ sep?
+  ~ root_dir? 
+} 
+
+
+root_dir = {
+  ( images ~ sep ~ images_root_dir )
+  | ( workspace ~ sep ~ workspace_root_dir )
+  | ( workspace_dl ~ sep ~ workspace_dl_root_dir )
+}
+
+
+// Images folder substructures
+images_root_dir = {
+ batch_id
+ ~ sep
+ ~ images_batch_root_dir
+}
+
+images_batch_root_dir = {
+  ( "illum" ~ sep ~ plate_id ~ sep ~ leaf_node? )
+  | ( "images" ~ sep ~ plate_id ~ sep ~  ^"images" ~ sep ~ leaf_node? )
+  | ( "images_aligned" ~ sep ~ plate_id ~ sep ~ leaf_node? )
+  | ( "images_corrected" ~ sep ~ images_corrected_root_dir )
+  | ( "images_corrected_cropped" ~ sep ~ images_corrected_cropped_root_dir ) 
+} 
+
+images_corrected_root_dir = {
+  ( "barcoding" ~ sep ~ plate_id ~ sep ~ leaf_node? )
+  | ( "painting" ~ sep ~ plate_id ~ sep ~ leaf_node? )
+} 
+
+images_corrected_cropped_root_dir = {
+  plate_id
+  ~ sep
+  ~ leaf_node?
+} 
+  
+// Workspace folder substructures
+workspace_root_dir = {
+  ( "analysis" ~ sep ~ analysis_root_dir )
+   | ( "backend" ~ sep ~ backend_root_dir )
+   | ( "load_data_csv" ~ sep ~ load_data_csv_root_dir )
+   | ( "metadata" ~ sep ~ metadata_root_dir )
+   | ( "profiles" ~ sep ~ profiles_root_dir )
+   | ( "assaydev" ~ sep ~ assaydev_root_dir )
+   | ( "embeddings" ~ sep ~ embeddings_root_dir )
+   | ( "pipelines" ~ sep ~ pipelines_root_dir )
+   | ( "quality_control" ~ sep ~ qc_root_dir )
+   | ( "segmentation" ~ sep ~ segmentation_root_dir )
+   | ( "software" ~ sep ~ software_root_dir )
+} 
+
+analysis_root_dir = {
+  batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ "analysis"
+  ~ sep
+  ~ plate_well_site_id
+  ~ sep
+  ~ (leaf_node | "outlines" ~ sep ~ leaf_node?) 
+} 
+
+backend_root_dir = {
+  batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node?
+} 
+
+load_data_csv_root_dir = {
+  batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node?
+} 
+
+metadata_root_dir = {
+  ( "external_metadata" ~ sep ~ leaf_node? )
+  | "platemaps" ~ sep ~ plate_id ~ sep ~ ("platemaps" ~ sep ~ leaf_node? | leaf_node)
+  | plate_id ~ sep ~ leaf_node?
+} 
+
+profiles_root_dir = {
+  batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node?
+}
+
+assaydev_root_dir = {
+  batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node?
+} 
+
+embeddings_root_dir = {
+  batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node?
+} 
+
+pipelines_root_dir = {
+  batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node?
+}
+
+qc_root_dir = {
+  "heatmap"
+  ~ sep
+  ~ batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node?
+} 
+
+segmentation_root_dir = {
+  software_hash
+  ~ sep
+  ~ ("model" | "training" | "outlines") ~ sep
+  ~ batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node?
+} 
+
+software_root_dir = {
+  batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node?
+} 
+
+// Workspace DL substructures
+workspace_dl_root_dir = {
+  ( "collated" ~ sep ~ collated_root_dir )
+  | ( "consensus" ~ sep ~ consensus_root_dir )
+  | ( "embeddings" ~ sep ~ dl_embeddings_root_dir )
+  | ( "profiles" ~ sep ~ dl_profiles_root_dir )
+} 
+
+collated_root_dir = {
+  model_id
+  ~ sep
+  ~ leaf_node?
+}
+
+consensus_root_dir = {
+  model_id
+  ~ sep
+  ~ leaf_node?
+}
+
+dl_embeddings_root_dir = {
+  model_id
+  ~ sep
+  ~ batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ (well_site_id | well_id ~ sep ~ site_id)
+  ~ sep
+  ~ leaf_node?
+}
+
+dl_profiles_root_dir = {
+  model_id
+  ~ sep
+  ~ batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node? 
+}
+
+
+// Common substructures
+sep = { "/" }
+images = { "images" }
+workspace = { "workspace" }
+workspace_dl = { "workspace_dl" }
+dataset_id = { allowed_names }
+source_id = { allowed_names }
+batch_id = { allowed_names }
+plate_id = { allowed_names }
+well_id = { allowed_names }
+site_id = { allowed_names }
+well_site_id = { well_id ~ "-" ~ site_id }
+plate_well_site_id = { allowed_names }
+model_id = { allowed_names }
+leaf_node = { filename ~ "." ~ extension }
+filename = { allowed_names }
+extension = { allowed_names }
+software_hash = { software ~ "_" ~ hash }
+software = { allowed_names }
+hash = { allowed_names }
+allowed_names = { ( ASCII_ALPHANUMERIC | "_" | "-" | " " )+ }
+
+
