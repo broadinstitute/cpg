@@ -1,9 +1,10 @@
 key = {
-  dataset_id
+  (dataset_id
   ~ sep
   ~ source_id?
   ~ sep?
-  ~ root_dir? 
+  ~ root_dir?)
+  | leaf_node
 } 
 
 
@@ -22,19 +23,22 @@ images_root_dir = {
 }
 
 images_batch_root_dir = {
-  ( "illum" ~ sep ~ plate_id ~ sep ~ leaf_node? )
-  | ( "images" ~ sep ~ plate_id ~ sep ~  ^"images" ~ sep ~ leaf_node? )
-  | ( "images_aligned" ~ sep ~ plate_id ~ sep ~ leaf_node? )
-  | ( "images_corrected" ~ sep ~ images_corrected_root_dir )
-  | ( "images_corrected_cropped" ~ sep ~ images_corrected_cropped_root_dir ) 
+  ( "illum" ~ sep ~ images_illum_root_dir )
+  | ( "images" ~ sep ~ images_images_root_dir)
+  | ( "images_aligned" ~ sep ~ images_images_aligned_root_dir)
+  | ( "images_corrected" ~ sep ~ images_images_corrected_root_dir )
+  | ( "images_corrected_cropped" ~ sep ~ images_images_corrected_cropped_root_dir ) 
 } 
 
-images_corrected_root_dir = {
+images_illum_root_dir = { plate_id ~ sep ~ leaf_node? }
+images_images_root_dir = { plate_id ~ sep ~ ^"images" ~ sep ~ leaf_node? }
+images_images_aligned_root_dir = {plate_id ~ sep ~ leaf_node ?}
+images_images_corrected_root_dir = {
   ( "barcoding" ~ sep ~ plate_id ~ sep ~ leaf_node? )
   | ( "painting" ~ sep ~ plate_id ~ sep ~ leaf_node? )
 } 
 
-images_corrected_cropped_root_dir = {
+images_images_corrected_cropped_root_dir = {
   plate_id
   ~ sep
   ~ leaf_node?

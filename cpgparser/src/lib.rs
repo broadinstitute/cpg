@@ -1,4 +1,7 @@
-use pyo3::prelude::{pyfunction, pymodule, wrap_pyfunction, PyModule, PyResult, Python};
+use pyo3::{
+    exceptions::PyValueError,
+    prelude::{pyfunction, pymodule, wrap_pyfunction, PyModule, PyResult, Python},
+};
 use std::collections::HashMap;
 use std::fmt;
 
@@ -20,24 +23,29 @@ impl fmt::Display for Rule {
 /// * `prefix`: S3 prefix as a string
 #[pyfunction]
 fn parse_prefix(prefix: String) -> PyResult<HashMap<String, String>> {
-    let mut parsed_prefix: HashMap<String, usize> = HashMap::new();
-    let mut parsed: HashMap<String, String> = HashMap::new();
-    let key = KeyParser::parse(Rule::key, &prefix).unwrap();
-    let key_tokens = key.tokens();
-    for token in key_tokens {
-        match token {
-            Token::Start { rule, pos } => {
-                parsed_prefix.insert(rule.to_string(), pos.pos());
-            }
-            Token::End { rule, pos } => {
-                if let Some((_, v)) = parsed_prefix.remove_entry(&rule.to_string()) {
-                    let value: String = (&prefix[v..pos.pos()]).into();
-                    parsed.insert(rule.to_string(), value);
+    let mut token_pos0: HashMap<String, usize> = HashMap::new();
+    let mut parsed_prefix: HashMap<String, String> = HashMap::new();
+    let key = KeyParser::parse(Rule::key, &prefix);
+    match key {
+        Ok(key) => {
+            let key_tokens = key.tokens();
+            for token in key_tokens {
+                match token {
+                    Token::Start { rule, pos } => {
+                        token_pos0.insert(rule.to_string(), pos.pos());
+                    }
+                    Token::End { rule, pos } => {
+                        if let Some((_, v)) = token_pos0.remove_entry(&rule.to_string()) {
+                            let value: String = (&prefix[v..pos.pos()]).into();
+                            parsed_prefix.insert(rule.to_string(), value);
+                        }
+                    }
                 }
             }
+            return Ok(parsed_prefix);
         }
+        Err(e) => return Err(PyValueError::new_err(e.to_string())),
     }
-    return Ok(parsed);
 }
 
 #[pyfunction]
