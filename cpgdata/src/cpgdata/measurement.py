@@ -56,10 +56,7 @@ def get_is_dir(key: str) -> bool:
     bool
         True if key is a dir else False.
     """
-    if key.endswith("/") == "":
-        return True
-    else:
-        return False
+    return key.endswith("/")
 
 
 def get_proj_id(key: str) -> str:
