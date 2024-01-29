@@ -25,7 +25,7 @@ twine = "^4.0"
 
 
 [tool.poetry.scripts]
-cpg = "cpgdata.cli:main"
+cpg = "cpgdata.cli.main:main"
 
 [build-system]
 requires = ["poetry-core"]
