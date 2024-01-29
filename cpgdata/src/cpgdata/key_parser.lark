@@ -90,7 +90,7 @@ extension: STRING
 software_hash: software "_" hash
 software: STRING
 hash: STRING
-STRING: LETTER (LETTER | DIGIT | "-" | "_" | " ")*
+STRING: (LETTER | DIGIT | "-" | "_" | " ")+
 
 %import common.DIGIT
 %import common.LETTER
