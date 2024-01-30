@@ -20,10 +20,6 @@ on:
 permissions:
   contents: read
 
-defaults:
-  run:
-working-directory: ./cpgparser
-
 jobs:
   linux:
     runs-on: ubuntu-latest
