@@ -22,7 +22,7 @@ permissions:
 
 defaults:
   run:
-    working-directory: ./cpgparser
+working-directory: ./cpgparser
 
 jobs:
   linux:
@@ -38,6 +38,7 @@ jobs:
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
+          working-directory: ./cpgparser
           target: ${{ matrix.target }}
           args: --release --out dist --find-interpreter
           sccache: 'true'
@@ -62,6 +63,7 @@ jobs:
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
+          working-directory: ./cpgparser
           target: ${{ matrix.target }}
           args: --release --out dist --find-interpreter
           sccache: 'true'
@@ -84,6 +86,7 @@ jobs:
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
+          working-directory: ./cpgparser
           target: ${{ matrix.target }}
           args: --release --out dist --find-interpreter
           sccache: 'true'
@@ -100,6 +103,7 @@ jobs:
       - name: Build sdist
         uses: PyO3/maturin-action@v1
         with:
+          working-directory: ./cpgparser
           command: sdist
           args: --out dist
       - name: Upload sdist
@@ -122,5 +126,6 @@ jobs:
         env:
           MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         with:
+          working-directory: ./cpgparser
           command: upload
           args: --non-interactive --skip-existing *
