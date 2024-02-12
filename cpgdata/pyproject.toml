@@ -14,7 +14,7 @@ polars = "^0.19"
 pyarrow = "^13.0"
 joblib = "^1.3.2"
 cpgparser = "^0.1"
-awscli = { git = "https://github.com/aws/aws-cli.git@014d436d8728f202afaa88555e80a89a4b14bffd" }
+cpgaws = "^2.15"
 
 
 [tool.poetry.dev-dependencies]
