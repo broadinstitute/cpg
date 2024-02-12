@@ -4,6 +4,7 @@ This module provide utility functions shared by other modules in the package.
 """
 
 import json
+import os
 import re
 from collections.abc import Sequence
 from contextlib import redirect_stdout
@@ -93,7 +94,7 @@ def get_package_root_path() -> Path:
 
 
 def download_s3_file(
-    bucket: str, key: str, out_path: Path, no_progress: bool = False
+    bucket: str, key: str, out_path: Path, no_progress: bool = True
 ) -> None:
     """Download file from S3 using aws cli.
 
@@ -141,7 +142,8 @@ def download_s3_files(
     idx : int
         Index of the worker if available.
     """
-    for key in key_list:
+    w_id = os.getpid()
+    for key in tqdm(key_list, desc=f"Downloading files: Worker {w_id}", position=idx):
         if flatten is True:
             write_path = out_path.joinpath(key.split("/")[-1])
         else:
