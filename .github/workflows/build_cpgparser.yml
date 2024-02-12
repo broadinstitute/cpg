@@ -41,7 +41,9 @@ jobs:
           manylinux: auto
       - name: Install built wheel
         run: |
-          pip install cpgparser --no-index --find-links cpgparser/target/wheels --force-reinstall
+          pip install -U pip
+          ls cpgparser/dist
+          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall -vv
           python -c "import cpgparser"
       - name: Build cpgdata
         run: |
@@ -53,7 +55,7 @@ jobs:
         with:
           name: wheels
           path: |
-            cpgparser/target/wheels
+            cpgparser/dist
             cpgdata/dist
 
   windows:
@@ -78,7 +80,9 @@ jobs:
           sccache: 'true'
       - name: Install built wheel
         run: |
-          pip install cpgparser --no-index --find-links cpgparser/target/wheels --force-reinstall
+          pip install -U pip
+          ls cpgparser/dist
+          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall -vv
           python -c "import cpgparser"
       - name: Build cpgdata
         run: |
@@ -90,7 +94,7 @@ jobs:
         with:
           name: wheels
           path: |
-            cpgparser/target/wheels
+            cpgparser/dist
             cpgdata/dist
 
   macos:
@@ -114,7 +118,9 @@ jobs:
           sccache: 'true'
       - name: Install built wheel
         run: |
-          pip install cpgparser --no-index --find-links cpgparser/target/wheels --force-reinstall
+          pip install -U pip
+          ls cpgparser/dist
+          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall
           python -c "import cpgparser"
       - name: Build cpgdata
         run: |
@@ -126,7 +132,7 @@ jobs:
         with:
           name: wheels
           path: |
-            cpgparser/target/wheels
+            cpgparser/dist
             cpgdata/dist
 
   sdist:
@@ -151,7 +157,7 @@ jobs:
         with:
           name: wheels
           path: |
-            cpgparser/target/wheels
+            cpgparser/dist
             cpgdata/dist
 
   release:
@@ -177,4 +183,3 @@ jobs:
         run: |
           pushd cpgdata
           poetry build -f sdist
-          popd
