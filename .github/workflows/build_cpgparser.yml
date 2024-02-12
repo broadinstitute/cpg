@@ -7,8 +7,6 @@ name: Build CPG parser rust library
 
 on:
   push:
-    paths:
-      - 'cpgparser/**'
     branches:
       - main
       - master
@@ -31,7 +29,9 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - name: Build wheels
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+      - name: Build cpgparser wheels
         uses: PyO3/maturin-action@v1
         with:
           working-directory: ./cpgparser
@@ -39,11 +39,22 @@ jobs:
           args: --release --out dist --find-interpreter
           sccache: 'true'
           manylinux: auto
+      - name: Install built wheel
+        run: |
+          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall
+          python -c "import cpgparser"
+      - name: Build cpgdata
+        run: |
+          pushd cpgdata
+          poetry build
+          popd
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
           name: wheels
-          path: cpgparser/dist
+          path: |
+            cpgparser/dist
+            cpgdata/dist
 
   windows:
     runs-on: windows-latest
@@ -56,6 +67,8 @@ jobs:
         with:
           python-version: '3.10'
           architecture: ${{ matrix.target }}
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
@@ -63,11 +76,22 @@ jobs:
           target: ${{ matrix.target }}
           args: --release --out dist --find-interpreter
           sccache: 'true'
+      - name: Install built wheel
+        run: |
+          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall
+          python -c "import cpgparser"
+      - name: Build cpgdata
+        run: |
+          pushd cpgdata
+          poetry build
+          popd
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
           name: wheels
-          path: cpgparser/dist
+          path: |
+            cpgparser/dist
+            cpgdata/dist
 
   macos:
     runs-on: macos-latest
@@ -79,6 +103,8 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
@@ -86,27 +112,47 @@ jobs:
           target: ${{ matrix.target }}
           args: --release --out dist --find-interpreter
           sccache: 'true'
+      - name: Install built wheel
+        run: |
+          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall
+          python -c "import cpgparser"
+      - name: Build cpgdata
+        run: |
+          pushd cpgdata
+          poetry build
+          popd
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
           name: wheels
-          path: cpgparser/dist
+          path: |
+            cpgparser/dist
+            cpgdata/dist
 
   sdist:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build sdist
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+      - name: Build cpgparser sdist
         uses: PyO3/maturin-action@v1
         with:
           working-directory: ./cpgparser
           command: sdist
           args: --out dist
+      - name: Build cpgdata sdist
+        run: |
+          pushd cpgdata
+          poetry build -f sdist
+          popd
       - name: Upload sdist
         uses: actions/upload-artifact@v3
         with:
           name: wheels
-          path: cpgparser/dist
+          path: |
+            cpgparser/dist
+            cpgdata/dist
 
   release:
     name: Release
@@ -117,7 +163,9 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: wheels
-      - name: Publish to PyPI
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+      - name: Publish to cpgparser PyPI
         uses: PyO3/maturin-action@v1
         env:
           MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
@@ -125,3 +173,8 @@ jobs:
           working-directory: ./cpgparser
           command: upload
           args: --non-interactive --skip-existing *
+      - name: Publish cpgdata to PyPI
+        run: |
+          pushd cpgdata
+          poetry build -f sdist
+          popd
