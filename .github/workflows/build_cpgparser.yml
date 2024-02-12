@@ -31,7 +31,7 @@ jobs:
           python-version: '3.10'
       - name: Install poetry
         uses: abatilo/actions-poetry@v2
-      - name: Build cpgparser wheels
+      - name: Build cpgparser
         uses: PyO3/maturin-action@v1
         with:
           working-directory: ./cpgparser
@@ -39,12 +39,6 @@ jobs:
           args: --release --out dist --find-interpreter
           sccache: 'true'
           manylinux: auto
-      - name: Install built wheel
-        run: |
-          pip install -U pip==24
-          ls cpgparser/dist
-          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall -vv
-          python -c "import cpgparser"
       - name: Build cpgdata
         run: |
           pushd cpgdata
@@ -71,19 +65,13 @@ jobs:
           architecture: ${{ matrix.target }}
       - name: Install poetry
         uses: abatilo/actions-poetry@v2
-      - name: Build wheels
+      - name: Build cpgparser
         uses: PyO3/maturin-action@v1
         with:
           working-directory: ./cpgparser
           target: ${{ matrix.target }}
           args: --release --out dist --find-interpreter
           sccache: 'true'
-      - name: Install built wheel
-        run: |
-          pip install -U pip==24
-          ls cpgparser/dist
-          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall -vv
-          python -c "import cpgparser"
       - name: Build cpgdata
         run: |
           pushd cpgdata
@@ -109,19 +97,13 @@ jobs:
           python-version: '3.10'
       - name: Install poetry
         uses: abatilo/actions-poetry@v2
-      - name: Build wheels
+      - name: Build cpgparser
         uses: PyO3/maturin-action@v1
         with:
           working-directory: ./cpgparser
           target: ${{ matrix.target }}
           args: --release --out dist --find-interpreter
           sccache: 'true'
-      - name: Install built wheel
-        run: |
-          pip install -U pip==24
-          ls cpgparser/dist
-          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall
-          python -c "import cpgparser"
       - name: Build cpgdata
         run: |
           pushd cpgdata
@@ -182,4 +164,6 @@ jobs:
       - name: Publish cpgdata to PyPI
         run: |
           pushd cpgdata
-          poetry build -f sdist
+          poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
+          poetry publish
+          popd
