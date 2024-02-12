@@ -41,7 +41,7 @@ jobs:
           manylinux: auto
       - name: Install built wheel
         run: |
-          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall
+          pip install cpgparser --no-index --find-links cpgparser/target/wheels --force-reinstall
           python -c "import cpgparser"
       - name: Build cpgdata
         run: |
@@ -53,7 +53,7 @@ jobs:
         with:
           name: wheels
           path: |
-            cpgparser/dist
+            cpgparser/target/wheels
             cpgdata/dist
 
   windows:
@@ -78,7 +78,7 @@ jobs:
           sccache: 'true'
       - name: Install built wheel
         run: |
-          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall
+          pip install cpgparser --no-index --find-links cpgparser/target/wheels --force-reinstall
           python -c "import cpgparser"
       - name: Build cpgdata
         run: |
@@ -90,7 +90,7 @@ jobs:
         with:
           name: wheels
           path: |
-            cpgparser/dist
+            cpgparser/target/wheels
             cpgdata/dist
 
   macos:
@@ -114,7 +114,7 @@ jobs:
           sccache: 'true'
       - name: Install built wheel
         run: |
-          pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall
+          pip install cpgparser --no-index --find-links cpgparser/target/wheels --force-reinstall
           python -c "import cpgparser"
       - name: Build cpgdata
         run: |
@@ -126,7 +126,7 @@ jobs:
         with:
           name: wheels
           path: |
-            cpgparser/dist
+            cpgparser/target/wheels
             cpgdata/dist
 
   sdist:
@@ -151,7 +151,7 @@ jobs:
         with:
           name: wheels
           path: |
-            cpgparser/dist
+            cpgparser/target/wheels
             cpgdata/dist
 
   release:
