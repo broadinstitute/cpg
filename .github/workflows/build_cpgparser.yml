@@ -160,7 +160,7 @@ jobs:
         with:
           working-directory: ./cpgparser
           command: upload
-          args: --non-interactive --skip-existing *
+          args: --non-interactive --skip-existing dist/*
       - name: Publish cpgdata to PyPI
         run: |
           pushd cpgdata
