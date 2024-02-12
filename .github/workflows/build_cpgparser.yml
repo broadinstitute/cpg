@@ -41,7 +41,7 @@ jobs:
           manylinux: auto
       - name: Install built wheel
         run: |
-          pip install -U pip
+          pip install -U pip==24
           ls cpgparser/dist
           pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall -vv
           python -c "import cpgparser"
@@ -80,7 +80,7 @@ jobs:
           sccache: 'true'
       - name: Install built wheel
         run: |
-          pip install -U pip
+          pip install -U pip==24
           ls cpgparser/dist
           pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall -vv
           python -c "import cpgparser"
@@ -118,7 +118,7 @@ jobs:
           sccache: 'true'
       - name: Install built wheel
         run: |
-          pip install -U pip
+          pip install -U pip==24
           ls cpgparser/dist
           pip install cpgparser --no-index --find-links cpgparser/dist --force-reinstall
           python -c "import cpgparser"
