@@ -22,7 +22,7 @@ from pathlib import Path
 from pprint import pprint
 
 import polars as pl
-from cpgdata.utils import download_files, parallel
+from cpgdata.utils import download_s3_files, parallel
 
 index_dir = Path("path to dir containing index files")
 index_files = [file for file in index_dir.glob("*.parquet")]
@@ -41,7 +41,7 @@ df = (
 pprint(df.to_dicts()[0:10])
 
 # Download filtered files
-download_keys = df.to_dict()["key"]
-parallel(download_keys, download_files)
+download_keys = list(df.to_dict()["key"])
+parallel(download_keys, download_s3_files, ["cellpainting-gallery", Path("path to save downloaded files")], jobs=20)
 
 ```

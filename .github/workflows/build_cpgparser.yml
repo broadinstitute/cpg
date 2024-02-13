@@ -141,6 +141,7 @@ jobs:
           path: |
             cpgparser/dist
             cpgdata/dist
+            cpgdata/pyproject.toml
 
   release:
     name: Release
