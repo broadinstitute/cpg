@@ -117,6 +117,7 @@ def download_s3_file(
     ]
     if no_progress is True:
         cli_args = cli_args + ["--no-progress"]
+    cli_args = cli_args + ["--no-sign-request"]
     AWSCLIEntryPoint().main(cli_args)
 
 
@@ -189,6 +190,7 @@ def download_s3_prefix(
         cli_args = cli_args + ["--exclude", exclude]
     if no_progress is True:
         cli_args = cli_args + ["--no-progress"]
+    cli_args = cli_args + ["--no-sign-request"]
     AWSCLIEntryPoint().main(cli_args)
 
 
@@ -229,6 +231,7 @@ def sync_s3_prefix(
         cli_args = cli_args + ["--include", include]
     if no_progress is True:
         cli_args = cli_args + ["--no-progress"]
+    cli_args = cli_args + ["--no-sign-request"]
     AWSCLIEntryPoint().main(cli_args)
 
 
@@ -282,6 +285,7 @@ def ls_s3_prefix(
     out_list = []
     if recursive is not False:
         cli_args = cli_args + ["--recursive"]
+    cli_args = cli_args + ["--no-sign-request"]
     with NamedTemporaryFile() as temp_file:
         with Path(temp_file.name).open("w") as f:
             with redirect_stdout(f):

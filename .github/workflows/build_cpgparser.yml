@@ -142,6 +142,7 @@ jobs:
             cpgparser/dist
             cpgdata/dist
             cpgdata/pyproject.toml
+            cpgdata/README.md
 
   release:
     name: Release

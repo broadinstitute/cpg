@@ -19,7 +19,7 @@ from pydantic.fields import ComputedFieldInfo, FieldInfo
 from tqdm import tqdm
 
 from cpgdata.parser import MeasuredPrefix, py_to_pa
-from cpgdata.rule import BaseRule, CheckWorkspaceDirs, CheckJUMPProjectStructure
+from cpgdata.rule import BaseRule, CheckJUMPProjectStructure, CheckWorkspaceDirs
 from cpgdata.utils import parallel
 
 
