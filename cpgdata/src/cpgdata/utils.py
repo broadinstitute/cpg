@@ -6,13 +6,13 @@ This module provide utility functions shared by other modules in the package.
 import json
 import os
 import re
+import subprocess
 from collections.abc import Sequence
 from contextlib import redirect_stdout
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from typing import Any, Callable, List, Optional
 
-from awscli.clidriver import AWSCLIEntryPoint
 from joblib import Parallel, cpu_count, delayed
 from tqdm import tqdm
 
@@ -31,6 +31,7 @@ def slice_iterable(iterable: Sequence, count: int) -> List[slice]:
     -------
     List[slice]
         A list of slice.
+
     """
     slices = []
     if count == 0:
@@ -71,6 +72,7 @@ def parallel(
     -------
     Any
         A list of outputs genetated by function.
+
     """
     jobs = jobs or cpu_count()
     if len(iterable) <= jobs:
@@ -89,6 +91,7 @@ def get_package_root_path() -> Path:
     -------
         Path
             Package root path
+
     """
     return Path(__file__).parents[1].absolute()
 
@@ -108,6 +111,7 @@ def download_s3_file(
         Path to save the object.
     no_progress: bool
         Flag to control progress bar.
+
     """
     cli_args = [
         "s3",
@@ -118,7 +122,7 @@ def download_s3_file(
     if no_progress is True:
         cli_args = cli_args + ["--no-progress"]
     cli_args = cli_args + ["--no-sign-request"]
-    AWSCLIEntryPoint().main(cli_args)
+    subprocess.run(["aws"] + cli_args)
 
 
 def download_s3_files(
@@ -142,6 +146,7 @@ def download_s3_files(
         Save all files in single directory ignoring prefix structure.
     idx : int
         Index of the worker if available.
+
     """
     w_id = os.getpid()
     for key in tqdm(key_list, desc=f"Downloading files: Worker {w_id}", position=idx):
@@ -176,6 +181,7 @@ def download_s3_prefix(
         regex pattern to exclude files to download.
     no_progress: bool
         Flag to control display of transfer progress. Defaults to False.
+
     """
     cli_args = [
         "s3",
@@ -191,7 +197,7 @@ def download_s3_prefix(
     if no_progress is True:
         cli_args = cli_args + ["--no-progress"]
     cli_args = cli_args + ["--no-sign-request"]
-    AWSCLIEntryPoint().main(cli_args)
+    subprocess.run(["aws"] + cli_args)
 
 
 def sync_s3_prefix(
@@ -218,6 +224,7 @@ def sync_s3_prefix(
         regex pattern to exclude files to download.
     no_progress: bool
         Flag to control display of transfer progress. Defaults to False.
+
     """
     cli_args = [
         "s3",
@@ -232,7 +239,7 @@ def sync_s3_prefix(
     if no_progress is True:
         cli_args = cli_args + ["--no-progress"]
     cli_args = cli_args + ["--no-sign-request"]
-    AWSCLIEntryPoint().main(cli_args)
+    subprocess.run(["aws"] + cli_args)
 
 
 BLANK_RGX = re.compile(r" +")
@@ -250,6 +257,7 @@ def parse_ls_out(line: str) -> str:
     -------
     str
         Parsed S3 prefix path
+
     """
     line = line.rstrip("\n")
     line = line.replace("//", "/")
@@ -274,6 +282,7 @@ def ls_s3_prefix(
         Path to save the object.
     recursive: bool
         Flag to allow recursive listing of files. Defaults to False.
+
     """
     bucket = bucket.strip("/")
     prefix = prefix.lstrip("/")
@@ -289,7 +298,7 @@ def ls_s3_prefix(
     with NamedTemporaryFile() as temp_file:
         with Path(temp_file.name).open("w") as f:
             with redirect_stdout(f):
-                AWSCLIEntryPoint().main(cli_args)
+                subprocess.run(["aws"] + cli_args)
         for line in Path(temp_file.name).open("r").readlines():
             out_list.append(f"{parse_ls_out(line)}")
     return out_list
@@ -308,6 +317,7 @@ def sync_inventory(bucket: str, prefix: str, out_path: Path, revision: int = 0) 
         Path to save synced files.
     revision : int
         Revision to sync. 0 is the latest revision.
+
     """
     dirs = ls_s3_prefix(bucket, prefix)
     dirs.sort()
