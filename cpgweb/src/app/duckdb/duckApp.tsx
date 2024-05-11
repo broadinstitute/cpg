@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import dynamic from "next/dynamic";
 
 import * as duckdb from "@duckdb/duckdb-wasm";
 import duckdb_wasm from "@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm";
@@ -15,36 +16,27 @@ import {
   DuckDBPlatform,
   DuckDBProvider,
 } from "@duckdb/react-duckdb";
-import { Shell } from "./shell";
 
+const Shell = dynamic((
+    () => import("./shell")
+  ), { ssr: false })
 
 const DUCKDB_BUNDLES: duckdb.DuckDBBundles = {
   mvp: {
     mainModule: duckdb_wasm,
-    mainWorker: new URL(
-      "@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js",
-      import.meta.url
-    ).toString(),
+    mainWorker: "/duckdb-wasm/duckdb-browser-mvp.worker.js",
   },
   eh: {
     mainModule: duckdb_wasm_eh,
-    mainWorker: new URL(
-      "@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js",
-      import.meta.url
-    ).toString(),
+    mainWorker: "/duckdb-wasm/duckdb-browser-eh.worker.js",
   },
   coi: {
     mainModule: duckdb_wasm_coi,
-    mainWorker: new URL(
-      "@duckdb/duckdb-wasm/dist/duckdb-browser-coi.worker.js",
-      import.meta.url
-    ).toString(),
-    pthreadWorker: new URL(
-      "@duckdb/duckdb-wasm/dist/duckdb-browser-coi.pthread.worker.js",
-      import.meta.url
-    ).toString(),
+    mainWorker: "/duckdb-wasm/duckdb-browser-coi.worker.js",
+    pthreadWorker: "/duckdb-wasm/duckdb-browser-coi.pthread.worker.js",
   },
 };
+
 const logger = new duckdb.ConsoleLogger(duckdb.LogLevel.WARNING);
 
 export default function DuckApp() {

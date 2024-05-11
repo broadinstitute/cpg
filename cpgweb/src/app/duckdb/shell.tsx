@@ -20,7 +20,7 @@ interface ShellProps {
   borderRadius?: number[];
 }
 
-export const Shell: React.FC<ShellProps> = (props: ShellProps) => {
+const Shell: React.FC<ShellProps> = (props: ShellProps) => {
   const [termContainer, setTermContainer] =
     React.useState<HTMLDivElement | null>(null);
   const [added, setAdded] = React.useState(false);
@@ -107,3 +107,5 @@ export const Shell: React.FC<ShellProps> = (props: ShellProps) => {
     </div>
   );
 };
+
+export default Shell;

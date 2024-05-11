@@ -1,11 +1,7 @@
 "use client"
 
-import dynamic from "next/dynamic";
-
+import DuckApp from "../src/app/duckdb/duckApp";
 
 export default function DuckHome() {
-  const DuckApp = dynamic((
-    () => import("../src/app/duckdb/duckApp")
-  ), { ssr: false })
   return <DuckApp />
 }
