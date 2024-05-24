@@ -11,16 +11,15 @@ import duckdb_wasm_coi from "@duckdb/duckdb-wasm/dist/duckdb-coi.wasm";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "xterm/css/xterm.css";
 
-import { S3Client } from "@aws-sdk/client-s3";
-import { get_all_index_files } from "@/lib/cpg_ops";
-
 import {
   DuckDBConnectionProvider,
   DuckDBPlatform,
   DuckDBProvider,
 } from "@duckdb/react-duckdb";
 
-const Shell = dynamic(() => import("./shell"), { ssr: false });
+const Shell = dynamic((
+  () => import("./shell")
+), { ssr: false })
 
 const DUCKDB_BUNDLES: duckdb.DuckDBBundles = {
   mvp: {
@@ -39,14 +38,8 @@ const DUCKDB_BUNDLES: duckdb.DuckDBBundles = {
 };
 
 const logger = new duckdb.ConsoleLogger(duckdb.LogLevel.WARNING);
-const s3 = new S3Client({
-  region: "us-east-1",
-  signer: { sign: async (req) => req },
-});
 
-get_all_index_files(s3);
-
-export default function DuckApp() {
+const DuckApp: React.FC = () => {
   return (
     <DuckDBPlatform logger={logger} bundles={DUCKDB_BUNDLES}>
       <DuckDBProvider>
@@ -57,3 +50,5 @@ export default function DuckApp() {
     </DuckDBPlatform>
   );
 }
+
+export default DuckApp;
