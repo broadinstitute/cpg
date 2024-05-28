@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "lib": [
       "dom",
       "dom.iterable",
@@ -33,10 +33,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/app/home/page.tsx.bak",
-    "src/app/page.tsx.bak",
-    "src/app/layout.tsx.bak"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
