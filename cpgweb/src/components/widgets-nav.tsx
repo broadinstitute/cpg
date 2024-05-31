@@ -8,14 +8,14 @@ import { cn } from "@/src/lib/utils";
 import { ScrollArea, ScrollBar } from "@/src/components/ui/scroll-area";
 
 const widgets = [
-  {
-    name: "Explore",
-    href: "/explore",
-  },
-  {
-    name: "Download",
-    href: "/download",
-  },
+  // {
+  //   name: "Explore",
+  //   href: "/explore",
+  // },
+  // {
+  //   name: "Download",
+  //   href: "/download",
+  // },
   {
     name: "Search Metadata",
     href: "/search",

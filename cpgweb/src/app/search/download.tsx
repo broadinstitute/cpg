@@ -16,6 +16,26 @@ queryClient.fetchQuery({
   retry: 3,
 });
 
+export function DownloadProjectFacetResult(props: TDownloadSearchResultProps) {
+  const [isDownloading, setIsDownloading] = React.useState(false);
+  const { searchValue } = props;
+
+  async function download() {
+    setIsDownloading(true);
+    const pageSize = 100;
+    const pageIndex = 0;
+
+    const { hits, nbPages } = await queryClient.fetchQuery({
+      queryKey: [searchValue, pageIndex, pageSize],
+      queryFn: () => fetchFiles(searchValue, pageIndex, pageSize),
+      retry: 3,
+    });
+
+
+  }
+
+}
+
 export function DownloadSearchResult(props: TDownloadSearchResultProps) {
   const [isDownloading, setIsDownloading] = React.useState(false);
   const { searchValue } = props;
