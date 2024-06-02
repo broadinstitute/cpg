@@ -8,8 +8,9 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  VisibilityState,
 } from "@tanstack/react-table";
+
+import { Accordion } from "@/components/ui/accordion";
 
 import {
   Table,
@@ -21,26 +22,15 @@ import {
 } from "@/src/components/ui/table";
 import Search from "@/src/components/ui/search/search";
 import { useQuery } from "@tanstack/react-query";
-import { fetchFiles } from "./services";
-import { columns } from "./columns";
-import { DataTablePagination } from "./pagination";
-import { DownloadSearchResult } from "./download";
+import { fetchFacetValues } from "./services";
+import { facetColumns } from "./columns";
 import { DataTableViewOptions } from "./view";
+import FacetTableRow from "./facet-table-row";
+import { DownloadFacet } from "./download-facet";
 
 export default function DataTable() {
   const [search, setSearch] = React.useState("");
   const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({
-      Gene: false,
-      Plate_Map_Name: false,
-      Col: false,
-      Row: false,
-      PlateName: false,
-      Name: false,
-      PublicID: false,
-      _highlightResult: false,
-    });
   const [pagination, setPagination] = React.useState({
     pageIndex: 0, //initial page index
     pageSize: 10, //default page size
@@ -57,25 +47,32 @@ export default function DataTable() {
   const { data, isFetching } = useQuery({
     queryKey: [search, pagination.pageIndex, pagination.pageSize],
     queryFn: () =>
-      fetchFiles(search, pagination.pageIndex, pagination.pageSize),
+      fetchFacetValues(search, pagination.pageIndex, pagination.pageSize),
   });
 
+  const facets = React.useMemo(() => {
+    if (!data || !data.facets) return [];
+    const d = data?.facets?.project_id;
+    const facets = Object.keys(data?.facets?.project_id).map((project) => ({
+      value: project,
+      count: d[project],
+    }));
+
+    return facets;
+  }, [data]);
+
   const table = useReactTable({
-    data: data?.hits || [],
-    columns: columns as any,
+    data: facets,
+    columns: facetColumns as any,
     getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
     enableRowSelection: true,
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
-    rowCount: (data?.nbPages || 0) * (data?.hitsPerPage || 0),
+    rowCount: facets.length || 0,
     state: {
       pagination,
-      rowSelection,
-      columnVisibility,
     },
     manualPagination: true,
   });
@@ -84,67 +81,57 @@ export default function DataTable() {
     <div className="w-full p-4">
       <div>
         <p className="text-sm text-muted-foreground py-2">
-          Search for genes, compounds and other metadata across the CellPainting Gallery.
+          Search for genes, compounds and other metadata across the CellPainting
+          Gallery.
         </p>
       </div>
       <div className="flex flex-wrap items-center justify-between py-4">
         <Search value={search} onSearch={onSearch} />
         <div className="py-2">
           <DataTableViewOptions table={table} />
-          <DownloadSearchResult searchValue={search} />
+          <DownloadFacet searchValue={search} />
         </div>
       </div>
       <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+        <Accordion type="multiple">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  {isFetching ? "Loading..." : "No results"}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table
+                  .getRowModel()
+                  .rows.map((row) => <FacetTableRow key={row.id} row={row} search={search} />)
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={facetColumns.length}
+                    className="h-24 text-center"
+                  >
+                    {isFetching ? "Loading..." : "No results"}
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </Accordion>
       </div>
-      {!isFetching && <DataTablePagination table={table} />}
     </div>
   );
 }

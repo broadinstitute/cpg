@@ -2,18 +2,17 @@ import React from "react";
 import { Button } from "@/src/components/ui/button";
 import { Download, Loader2 } from "lucide-react";
 import { QueryClient } from "@tanstack/react-query";
-import { fetchProjectFiles } from "./services";
+import { fetchFacetValues } from "./services";
 
 export type TDownloadSearchResultProps = {
   searchValue: string;
-  projectId: string;
 };
 
 const queryClient = new QueryClient();
 
-export function DownloadSearchResult(props: TDownloadSearchResultProps) {
+export function DownloadFacet(props: TDownloadSearchResultProps) {
   const [isDownloading, setIsDownloading] = React.useState(false);
-  const { searchValue, projectId } = props;
+  const { searchValue } = props;
 
   async function download() {
     setIsDownloading(true);
@@ -22,8 +21,7 @@ export function DownloadSearchResult(props: TDownloadSearchResultProps) {
 
     const { facets } = await queryClient.fetchQuery({
       queryKey: [searchValue, pageIndex, pageSize],
-      queryFn: () =>
-        fetchProjectFiles(searchValue, projectId, pageIndex, pageSize),
+      queryFn: () => fetchFacetValues(searchValue, pageIndex, pageSize),
       retry: 3,
     });
 

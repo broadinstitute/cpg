@@ -1,3 +1,15 @@
+export type TFacets = {
+  value: string;
+  highlighted: string;
+  count: number;
+};
+
+export type TFacetResponse = {
+  exhaustiveFacetsCount: boolean;
+  facets: TFacets;
+  processingTimeMS: number;
+};
+
 export type TSearchResult = {
   hits: THit[];
   nbHits: number;
