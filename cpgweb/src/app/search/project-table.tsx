@@ -69,9 +69,10 @@ export default function ProjectTable(props: TProjectTableProps) {
   });
 
   const facets = React.useMemo(() => {
-    if (!data || !data.facets) return [];
-    return Object.keys(data?.facets?.key).map((key) => ({
+    if (!data || !data.facets || !data.facets.key) return [];
+    return Object.keys(data.facets.key).map((key) => ({
       value: key,
+      count: data.facets?.key[key]
     }));
   }, [data]);
 

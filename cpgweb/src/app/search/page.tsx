@@ -51,11 +51,11 @@ export default function DataTable() {
   });
 
   const facets = React.useMemo(() => {
-    if (!data || !data.facets) return [];
-    const d = data?.facets?.project_id;
-    const facets = Object.keys(data?.facets?.project_id).map((project) => ({
+    if (!data || !data.facets || !data.facets.project_id) return [];
+    const project_id_keys = data.facets.project_id;
+    const facets = Object.keys(project_id_keys).map((project) => ({
       value: project,
-      count: d[project],
+      count: project_id_keys[project],
     }));
 
     return facets;
@@ -104,9 +104,9 @@ export default function DataTable() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     );
                   })}
@@ -117,7 +117,9 @@ export default function DataTable() {
               {table.getRowModel().rows?.length ? (
                 table
                   .getRowModel()
-                  .rows.map((row) => <FacetTableRow key={row.id} row={row} search={search} />)
+                  .rows.map((row) => (
+                    <FacetTableRow key={row.id} row={row} search={search} />
+                  ))
               ) : (
                 <TableRow>
                   <TableCell
