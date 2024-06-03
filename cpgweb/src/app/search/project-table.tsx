@@ -21,7 +21,7 @@ import {
 } from "@/src/components/ui/table";
 import { DataTableViewOptions } from "./view";
 import { DownloadSearchResult } from "./download";
-import Search from "../../components/ui/search/search";
+import Search from "@/src/components/ui/search/search";
 import { DataTablePagination } from "./pagination";
 
 export type TProjectTableProps = {

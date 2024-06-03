@@ -7,6 +7,7 @@ import { Button } from "../../components/ui/button";
 import { Download, Eye, Loader2 } from "lucide-react";
 import { get_key_file } from "../../lib/cpg_ops";
 import React from "react";
+import { FileViewer } from "./file-viewer"
 
 // export const columns: ColumnDef<THit>[] = [
 //   {
@@ -93,7 +94,7 @@ export const columns: ColumnDef<THit>[] = [
   },
   {
     accessorKey: "count",
-    header: "Count",
+    header: "Hits",
     cell: ({ row }) => <div>{row.getValue("count")}</div>,
   },
   {
@@ -141,9 +142,7 @@ function ProjectKeyActions(props: TProjectKeyActions) {
 
   return (
     <div>
-      <Button variant="ghost">
-        <Eye className="mr-2 h-4 w-4" /> View
-      </Button>
+      <FileViewer fileName={filename} />
       <Button
         variant="ghost"
         disabled={isDownloadLoading}

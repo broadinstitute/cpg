@@ -13,6 +13,11 @@ import {
   DropdownMenuSeparator,
 } from "@/src/components/ui/dropdown-menu";
 
+const viewMap: { [id: string]: string } = {
+  "value": "project",
+  "count": "hits"
+}
+
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
 }
@@ -45,7 +50,7 @@ export function DataTableViewOptions<TData>({
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {column.id.slice(0, 10)}
+                {viewMap[column.id.slice(0, 10)]}
               </DropdownMenuCheckboxItem>
             );
           })}
