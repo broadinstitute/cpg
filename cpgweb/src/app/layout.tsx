@@ -43,33 +43,21 @@ export default function RootLayout({
               <PageHeader>
                 <Announcement />
                 <PageHeaderHeading className="hidden md:block">
-                  CellPainting Gallery
+                  Cell Painting Gallery Tools
                 </PageHeaderHeading>
                 <PageHeaderHeading className="md:hidden">
-                  CellPainting Gallery
+                  Cell Painting Gallery Tools
                 </PageHeaderHeading>
                 <PageHeaderDescription>
-                  The Cell Painting Gallery is a collection of image datasets created
-                  using the Cell Painting assay. The images of cells are captured by
-                  microscopy imaging, and reveal the response of various labeled cell
-                  components to whatever treatments are tested, which can include
-                  genetic perturbations, chemicals or drugs, or different cell types.
+                  This alpha release contains a metadata searching tool that will search across metadata
+                  files in the Cell Painting Gallery. Stay tuned for more tools in future releases.
                 </PageHeaderDescription>
                 <PageActions>
                   <Link
-                    href="/docs"
+                    href="https://broadinstitute.github.io/cellpainting-gallery/overview.html"
                     className={cn(buttonVariants(), "rounded-[6px]")}
                   >
                     Docs
-                  </Link>
-                  <Link
-                    href="/examples"
-                    className={cn(
-                      buttonVariants({ variant: "outline" }),
-                      "rounded-[6px]",
-                    )}
-                  >
-                    Examples
                   </Link>
                   <ModeToggle />
                 </PageActions>
