@@ -14,22 +14,30 @@ const get_anon_s3_client = (): S3Client => {
   });
 };
 
-const get_key_file = async (Key: string) => {
+export type TGetKeyFileOptions = {
+  toString?: {
+    encoding: "utf-8" | "base64";
+  };
+};
+
+const get_key_file = async (
+  Key: string,
+  options = {} as TGetKeyFileOptions
+) => {
   const command = new GetObjectCommand({
     Bucket: "cellpainting-gallery",
     Key,
   });
 
   const client = get_anon_s3_client();
-
+  const { toString } = options;
   try {
     const response = await client.send(command);
-    // if (Key.endsWith(".png")) {
-    //   const body = await response.Body?.transformToString("base64");
-    //   return body;
-    // }
 
-    const body = await response.Body?.transformToByteArray();
+    const body =
+      typeof toString?.encoding === "string"
+        ? await response.Body?.transformToString(toString.encoding)
+        : await response.Body?.transformToByteArray();
     return body;
   } catch (err) {
     console.log(err);

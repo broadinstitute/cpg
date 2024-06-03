@@ -2,6 +2,7 @@
 "use client";
 import Link from "next/link";
 import { Inter as FontSans } from "next/font/google";
+import 'react-datasheet-grid/dist/style.css';
 import "../styles/globals.css";
 import { cn } from "@/src/lib/utils";
 import { ThemeProvider } from "@/src/components/theme-provider";
