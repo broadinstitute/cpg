@@ -1,7 +1,7 @@
 # Overview
 
 The project aims to provide tools and libraries for bootstrapping, maintaining
-and accessing the cellpainting gallery.
+and accessing the Cell Painting Gallery.
 
 # Design goals
 

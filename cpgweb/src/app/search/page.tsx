@@ -81,8 +81,10 @@ export default function DataTable() {
     <div className="w-full p-4">
       <div>
         <p className="text-sm text-muted-foreground py-2">
-          Search for genes, compounds and other metadata across the CellPainting
-          Gallery.
+          Search for genes, compounds and other metadata across the Cell Painting
+          Gallery. Searches through all metadata files in the Gallery and returns
+          the metadata files that contain the search term. See Cell Painting Gallery
+          documentation for information on file organization and download.
         </p>
       </div>
       <div className="flex flex-wrap items-center justify-between py-4">

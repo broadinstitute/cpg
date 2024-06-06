@@ -1,7 +1,7 @@
 # CPG Web Interface
 
 The interface provides a user friendly way to navigate, explore and download
-filtered `view` of the cellpainting gallery.
+filtered `view` of the Cell Painting Gallery.
 
 ## Filtered views
 
