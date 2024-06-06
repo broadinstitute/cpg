@@ -24,22 +24,6 @@
     --input: 240 5.9% 90%;
     --ring: 346.8 77.2% 49.8%;
     --radius: 0.5rem;
-    /* --dsg-border-color: var(--muted-foreground); */
-    /* --dsg-selection-border-color: var(--accent-foreground); */
-    /* --dsg-selection-border-radius: 2px; */
-    /* --dsg-selection-border-width: 2px; */
-    /* --dsg-selection-background-color: var(--muted); */
-    /* --dsg-selection-disabled-border-color: var(--muted); */
-    /* --dsg-selection-disabled-background-color: var(--muted); */
-    /* --dsg-corner-indicator-width: 10px; */
-    /* --dsg-header-text-color: var(--secondary-foreground); */
-    /* --dsg-header-active-text-color: var(--primary-foreground); */
-    /* --dsg-cell-background-color: var(--background); */
-    /* --dsg-cell-disabled-background-color: var(--background); */
-    /* --dsg-transition-duration: 0.1s; */
-    /* --dsg-expand-rows-indicator-width: 10px; */
-    /* --dsg-scroll-shadow-width: 7px; */
-    /* --dsg-scroll-shadow-color: rgba(0, 0, 0, 0.2); */
   }
 
   .dark {
@@ -62,29 +46,35 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 346.8 77.2% 49.8%;
-    /* --dsg-border-color: var(--muted-foreground); */
-    /* --dsg-selection-border-color: var(--accent-foreground); */
-    /* --dsg-selection-border-radius: 2px; */
-    /* --dsg-selection-border-width: 2px; */
-    /* --dsg-selection-background-color: var(--muted); */
-    /* --dsg-selection-disabled-border-color: var(--muted); */
-    /* --dsg-selection-disabled-background-color: var(--muted); */
-    /* --dsg-corner-indicator-width: 10px; */
-    /* --dsg-header-text-color: var(--secondary-foreground); */
-    /* --dsg-header-active-text-color: var(--primary-foreground); */
-    /* --dsg-cell-background-color: var(--background); */
-    /* --dsg-cell-disabled-background-color: var(--background); */
-    /* --dsg-transition-duration: 0.1s; */
-    /* --dsg-expand-rows-indicator-width: 10px; */
-    /* --dsg-scroll-shadow-width: 7px; */
-    /* --dsg-scroll-shadow-color: rgba(0, 0, 0, 0.2); */
   }
 }
+
+.dark .cpg .dsg-container {
+  background: #0c0a09;
+}
+
+.dark .cpg .dsg-container .dsg-cell {
+  --dsg-border-color: #777;
+  --dsg-header-text-color: white;
+  --dsg-cell-background-color: #222;
+
+  background: #0c0a09;
+  color: #bbb;
+}
+
+.dark .cpg .dsg-cell .dsg-cell-gutter-active {
+  background: #222;
+}
+
+/* .cpg .dsg-container .dsg-cell.active {
+  background: #222
+} */
 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }

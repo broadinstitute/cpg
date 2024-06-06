@@ -1,8 +1,7 @@
-
 "use client";
 import Link from "next/link";
 import { Inter as FontSans } from "next/font/google";
-import 'react-datasheet-grid/dist/style.css';
+import "react-datasheet-grid/dist/style.css";
 import "../styles/globals.css";
 import { cn } from "@/src/lib/utils";
 import { ThemeProvider } from "@/src/components/theme-provider";
@@ -26,7 +25,6 @@ interface HomeLayoutProps {
 
 const queryClient = new QueryClient();
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,11 +32,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(
-        "min-h-screen bg-background font-sans antialiased",
-        fontSans.variable
-      )}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased cpg",
+          fontSans.variable
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <QueryClientProvider client={queryClient}>
             <div className="bg-background container relative">
               <PageHeader>

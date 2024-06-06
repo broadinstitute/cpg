@@ -1,9 +1,5 @@
 import { Button } from "@/src/components/ui/button";
-import {
-  DataSheetGrid,
-  textColumn,
-  keyColumn,
-} from 'react-datasheet-grid';
+import { DataSheetGrid, textColumn, keyColumn } from "react-datasheet-grid";
 import {
   Dialog,
   DialogContent,
@@ -18,24 +14,23 @@ import React from "react";
 import Image from "next/image";
 
 interface DSVRendererProps {
-  data: DSVRowArray
+  data: DSVRowArray;
 }
 const DSVRenderer = (props: DSVRendererProps) => {
   const { data } = props;
-  // const [data, setData] = React.useState([
-  //   { active: true, firstName: 'Elon', lastName: 'Musk' },
-  //   { active: false, firstName: 'Jeff', lastName: 'Bezos' },
-  // ])
-  const columns = data.columns.map((col) => { return { ...keyColumn(col, textColumn), title: col, disabled: true } })
+  const columns = data.columns.map((col) => {
+    return { ...keyColumn(col, textColumn), title: col, disabled: true };
+  });
   return (
-    <DataSheetGrid
-      value={data}
-      columns={columns}
-      addRowsComponent={false}
-    />
-  )
-
-}
+    <div
+      style={{
+        maxWidth: "calc(100vw - 60px)",
+      }}
+    >
+      <DataSheetGrid value={data} columns={columns} addRowsComponent={false} disableContextMenu />
+    </div>
+  );
+};
 
 interface FileViewerProps {
   fileName: string;
@@ -47,8 +42,8 @@ export function FileViewer(props: FileViewerProps) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   async function fetchData() {
-    if (fileName.endsWith(".xslx")) {
-      setViewContent("Please download to view this file.")
+    if (fileName.endsWith(".xlsx")) {
+      setViewContent("Please download to view this file.");
       setIsLoading(false);
       return;
     }
@@ -59,7 +54,6 @@ export function FileViewer(props: FileViewerProps) {
       if (fileName.endsWith(".png")) {
         setViewContent(`data:image/png;base64,${data}`);
       } else {
-        // Only showing the first 100 characters
         setViewContent(data);
       }
     } else {
@@ -75,6 +69,8 @@ export function FileViewer(props: FileViewerProps) {
   const isImage = fileName.endsWith(".png");
   const isCSV = fileName.endsWith(".csv");
   const isTSV = fileName.endsWith(".tsv");
+  const isTXT = fileName.endsWith(".txt");
+  const isExcel = fileName.endsWith(".xlsx");
 
   return (
     <Dialog>
@@ -94,8 +90,10 @@ export function FileViewer(props: FileViewerProps) {
         )}
 
         {failedToLoad && <div>Failed to load.</div>}
-        {loaded && isCSV && <div> <DSVRenderer data={csvParse(viewContent)} /></div>}
-        {loaded && isTSV && <div> <DSVRenderer data={tsvParse(viewContent)} /></div>}
+        {loaded && isExcel && <div>Please download to view the file!</div>}
+        {loaded && isCSV && <DSVRenderer data={csvParse(viewContent)} />}
+        {loaded && isTSV && <DSVRenderer data={tsvParse(viewContent)} />}
+        {loaded && isTXT && <p> {viewContent} </p>}
         {loaded && isImage && (
           <div className="flex justify-center">
             <Image
