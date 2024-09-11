@@ -295,12 +295,9 @@ def ls_s3_prefix(
     if recursive is not False:
         cli_args = cli_args + ["--recursive"]
     cli_args = cli_args + ["--no-sign-request"]
-    with NamedTemporaryFile() as temp_file:
-        with Path(temp_file.name).open("w") as f:
-            with redirect_stdout(f):
-                subprocess.run(["aws"] + cli_args)
-        for line in Path(temp_file.name).open("r").readlines():
-            out_list.append(f"{parse_ls_out(line)}")
+    ls_prefix = subprocess.run(["aws"] + cli_args, capture_output=True, text=True)
+    for line in ls_prefix.stdout.splitlines():
+        out_list.append(f"{parse_ls_out(line)}")
     return out_list
 
 
