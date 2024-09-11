@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixpkgs_master.url = "github:NixOS/nixpkgs/master";
     systems.url = "github:nix-systems/default";
     devenv.url = "github:cachix/devenv";
@@ -53,7 +53,7 @@
                   enterShell = ''
                     export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
                     eval "$(micromamba shell hook -s bash)"
-                    micromamba create -r .venv -n cpg -c conda-forge python=3.10 ipykernel
+                    micromamba create -r .venv -n cpg -c conda-forge python=3.11 ipykernel
                     micromamba activate .venv/envs/cpg
                     poetry install -C cpgdata
                     python -m ipykernel install --user --name cpg
