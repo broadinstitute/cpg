@@ -52,6 +52,7 @@ def sync(out: str, bucket: str, prefix: str, force: bool, debug: bool) -> None:
         Force re-validation.
     debug : bool
         Run in debug mode.
+
     """
     sync_inventory(bucket, prefix, Path(out))
 
@@ -96,6 +97,7 @@ def gen(inp: str, out: str, jobs: Optional[int], force: bool, debug: bool) -> No
         Force re-validation.
     debug : bool
         Run in debug mode.
+
     """
     validate(Path(inp), Path(out), jobs=jobs)
 
@@ -140,6 +142,7 @@ def val(inp: str, out: str, jobs: Optional[int], force: bool, debug: bool) -> No
         Force re-validation.
     debug : bool
         Run in debug mode.
+
     """
     validate(Path(inp), Path(out), jobs=jobs)
 
@@ -184,6 +187,7 @@ def measure(inp: str, out: str, jobs: Optional[int], force: bool, debug: bool) -
         Force re-validation.
     debug : bool
         Run in debug mode.
+
     """
     _measure(Path(inp), Path(out), jobs=jobs)
 
@@ -228,6 +232,7 @@ def check(inp: str, out: str, jobs: Optional[int], force: bool, debug: bool) -> 
         Force re-validation.
     debug : bool
         Run in debug mode.
+
     """
     _check(Path(inp), Path(out), jobs=jobs)
 

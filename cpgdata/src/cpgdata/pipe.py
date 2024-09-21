@@ -20,7 +20,7 @@ from pydantic.fields import ComputedFieldInfo, FieldInfo
 from tqdm import tqdm
 
 from cpgdata.parser import MeasuredPrefix, py_to_pa
-from cpgdata.rule import BaseRule, CheckJUMPProjectStructure, CheckWorkspaceDirs
+from cpgdata.rule import BaseRule, CheckJUMPProjectStructure
 from cpgdata.utils import parallel
 
 
@@ -36,6 +36,7 @@ def get_field_type(model_field: Union[FieldInfo, ComputedFieldInfo]) -> Any:  # 
     -------
     Any
         Type of the model field.
+
     """
     return (
         model_field.annotation
@@ -56,6 +57,7 @@ def gen_pq_schema(pydantic_model: Type[MeasuredPrefix]) -> pa.Schema:
     -------
     pa.Schema
         Parquet schema.
+
     """
     constructed_model = pydantic_model.model_construct()
     model_fields = constructed_model.get_all_fields()
@@ -75,6 +77,7 @@ def gen_lazy_slice(lazy_df: pl.LazyFrame, metadata: FileMetaData) -> Generator:
         Polars lazy dataframe.
     metadata : FileMetaData
         Parquet metadata for row group information.
+
     """
     row_groups = metadata.num_row_groups
     num_rows = [metadata.row_group(i).num_rows for i in range(row_groups)]
@@ -95,6 +98,7 @@ def parse_batch(batch: pl.DataFrame) -> dict:
     -------
     dict
         Generated column major dict of MeasuredPrefix objects.
+
     """
     measured_prefix_adapter = TypeAdapter(MeasuredPrefix)
     row_dicts = batch.to_dicts()
@@ -133,6 +137,7 @@ def gen_measurement(
         Path to output dir for writing generated measurement files.
     job_idx : int
         Job index for tqdm progress bar ordering.
+
     """
     w_id = os.getpid()
     for i, file in tqdm(
@@ -177,6 +182,7 @@ def apply_rules(
         Path to dir containing measurement files.
     job_idx : int
         Job index for tqdm progress bar ordering.
+
     """
     files = [file for file in measurements_dir.glob("*.parquet")]
     df = pl.scan_parquet(files)
@@ -197,6 +203,7 @@ def measure(in_path: Path, out_path: Path, jobs: Optional[int] = None) -> None:
         Path to save generated parquet files.
     jobs : Optional[int]
         Number of jobs to launch.
+
     """
     files = [file for file in in_path.glob("*.parquet")]
     measurement_out_path = out_path.joinpath("measurements")
@@ -216,6 +223,7 @@ def check(in_path: Path, out_path: Path, jobs: Optional[int] = None) -> None:
         Path to save generated parquet files.
     jobs : Optional[int]
         Number of jobs to launch.
+
     """
     measurement_out_path = out_path.joinpath("measurements")
     check_out_path = out_path.joinpath("checks")
@@ -239,6 +247,7 @@ def validate(in_path: Path, out_path: Path, jobs: Optional[int] = None) -> None:
         Path to save generated parquet files.
     jobs : Optional[int]
         Number of jobs to launch.
+
     """
     # Create Measurements
     measure(in_path, out_path, jobs)

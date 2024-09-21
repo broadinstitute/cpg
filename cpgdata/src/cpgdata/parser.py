@@ -45,6 +45,7 @@ def enum_to_str(v: Enum) -> str:
     -------
     str
         String value of the enum.
+
     """
     return v.value
 
@@ -202,6 +203,7 @@ class MeasuredPrefix(InventoryRowParser, ParsedPrefix):
         -------
         Optional[str]
             Computed workspace directory value.
+
         """
         workspace_dir = self.workspace_root_dir
         workspace_dir = str(workspace_dir).split("/")[0]
@@ -214,6 +216,7 @@ class MeasuredPrefix(InventoryRowParser, ParsedPrefix):
         -------
         dict
             A dict with field key and FieldInfo or ComputedFieldInfo.
+
         """
         model_fields = self.model_fields
         return {**model_fields, **self.model_computed_fields}
@@ -233,6 +236,7 @@ class MeasuredPrefix(InventoryRowParser, ParsedPrefix):
         -------
         "MeasuredPrefix"
            Validation error as a parsed object.
+
         """
         print(f"I am called with the error {e}")
         return MeasuredPrefix.model_construct(

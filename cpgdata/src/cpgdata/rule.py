@@ -19,6 +19,7 @@ class BaseRule(ABC):
         ----------
         out_path : Path
             Path to write rule output.
+
         """
         self.out_path = out_path
 
@@ -35,6 +36,7 @@ class BaseRule(ABC):
         -------
         bool
             Flag indicating check passed or not.
+
         """
         pass
 
@@ -54,6 +56,7 @@ class CheckProjectDirs(BaseRule):
         -------
         bool
             Flag indicating check passed or not.
+
         """
         return True
 
@@ -73,6 +76,7 @@ class CheckJUMPProjectStructure(BaseRule):
         -------
         bool
             Flag indicating check passed or not.
+
         """
         # Setup out path for the check output
         out_path = self.out_path.joinpath("check_jump_project_structure.parquet")
@@ -108,6 +112,7 @@ class CheckWorkspaceDirs(BaseRule):
         -------
         bool
             Flag indicating check passed or not.
+
         """
         project_groups = df.groupby("dataset_id")
         project_workspace_dirs = project_groups.agg(

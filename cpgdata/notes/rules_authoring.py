@@ -18,10 +18,11 @@ def __(mo):
 
 @app.cell
 def __():
+    from pprint import pprint
+
+    import polars as pl
     from cpgdata.rule import BaseRule
     from cpgdata.utils import get_package_root_path
-    import polars as pl
-    from pprint import pprint
     return BaseRule, get_package_root_path, pl, pprint
 
 
