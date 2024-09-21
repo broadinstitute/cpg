@@ -8,9 +8,7 @@ import os
 import re
 import subprocess
 from collections.abc import Sequence
-from contextlib import redirect_stdout
 from pathlib import Path
-from tempfile import NamedTemporaryFile
 from typing import Any, Callable, List, Optional
 
 from joblib import Parallel, cpu_count, delayed

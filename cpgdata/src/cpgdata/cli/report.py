@@ -39,6 +39,7 @@ def sync(inp: str, out: str, force: bool, debug: bool) -> None:
         Force re-validation.
     debug : bool
         Run in debug mode.
+
     """
     validate(Path(inp), Path(out))
 
@@ -75,6 +76,7 @@ def gen(inp: str, out: str, force: bool, debug: bool) -> None:
         Force re-validation.
     debug : bool
         Run in debug mode.
+
     """
     validate(Path(inp), Path(out))
 
