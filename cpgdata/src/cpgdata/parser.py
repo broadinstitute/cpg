@@ -248,8 +248,10 @@ py_to_pa = {
     datetime: pa.timestamp(unit="ms", tz="UTC"),
     Optional[datetime]: pa.timestamp(unit="ms", tz="UTC"),
     List[str]: pa.list_(pa.string()),
+    list[str] | None: pa.list_(pa.string()),
     bool: pa.bool_(),
     Optional[WorkspaceFolder]: pa.string(),
     Optional[str]: pa.string(),
     Optional[int]: pa.int64(),
+    dict[str, str] | None: pa.map_(pa.string(), pa.string()),
 }

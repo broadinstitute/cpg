@@ -4,7 +4,7 @@
 
 ## CPG Data
 
-`cpgdata` provides data validation for the cellpainting gallery. It parses
+`cpgdata` provides data validation for the Cell Painting Gallery. It parses
 `inventory` files using a pydantic class. Then it generates a lot of
 `measurements` and saves all the measurement to parquet files. Finally, `rules`
 are applied on the generated `measurements` for validation.

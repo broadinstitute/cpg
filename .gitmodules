@@ -1,0 +1,6 @@
+[submodule "cpgduck/duckdb"]
+	path = cpgduck/duckdb
+	url = https://github.com/duckdb/duckdb.git
+[submodule "cpgduck/extension-ci-tools"]
+	path = cpgduck/extension-ci-tools
+	url = https://github.com/duckdb/extension-ci-tools.git

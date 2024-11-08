@@ -12,17 +12,18 @@ root_dir = {
   ( images ~ sep ~ images_root_dir )
   | ( workspace ~ sep ~ workspace_root_dir )
   | ( workspace_dl ~ sep ~ workspace_dl_root_dir )
+  | leaf_node
 }
 
 
 // Images folder substructures
-images_root_dir = {
+images_root_dir = _{
  batch_id
  ~ sep
  ~ images_batch_root_dir
 }
 
-images_batch_root_dir = {
+images_batch_root_dir = _{
   ( "illum" ~ sep ~ images_illum_root_dir )
   | ( "images" ~ sep ~ images_images_root_dir)
   | ( "images_aligned" ~ sep ~ images_images_aligned_root_dir)
@@ -30,22 +31,22 @@ images_batch_root_dir = {
   | ( "images_corrected_cropped" ~ sep ~ images_images_corrected_cropped_root_dir ) 
 } 
 
-images_illum_root_dir = { plate_id ~ sep ~ leaf_node? }
-images_images_root_dir = { plate_id ~ sep ~ ^"images" ~ sep ~ leaf_node? }
-images_images_aligned_root_dir = {plate_id ~ sep ~ leaf_node ?}
-images_images_corrected_root_dir = {
+images_illum_root_dir = _{ plate_id ~ sep ~ leaf_node? }
+images_images_root_dir = _{ (plate_id ~ sep ~ ^"images" ~ sep ~ leaf_node?) |  (plate_id ~ sep ~ leaf_node?)}
+images_images_aligned_root_dir = _{plate_id ~ sep ~ leaf_node ?}
+images_images_corrected_root_dir = _{
   ( "barcoding" ~ sep ~ plate_id ~ sep ~ leaf_node? )
   | ( "painting" ~ sep ~ plate_id ~ sep ~ leaf_node? )
 } 
 
-images_images_corrected_cropped_root_dir = {
+images_images_corrected_cropped_root_dir = _{
   plate_id
   ~ sep
   ~ leaf_node?
 } 
   
 // Workspace folder substructures
-workspace_root_dir = {
+workspace_root_dir = _{
   ( "analysis" ~ sep ~ analysis_root_dir )
    | ( "backend" ~ sep ~ backend_root_dir )
    | ( "load_data_csv" ~ sep ~ load_data_csv_root_dir )
@@ -57,9 +58,10 @@ workspace_root_dir = {
    | ( "quality_control" ~ sep ~ qc_root_dir )
    | ( "segmentation" ~ sep ~ segmentation_root_dir )
    | ( "software" ~ sep ~ software_root_dir )
+   | ( "scratch" ~ sep ~ scratch_root_dir )
 } 
 
-analysis_root_dir = {
+analysis_root_dir = _{
   batch_id
   ~ sep
   ~ plate_id
@@ -71,7 +73,7 @@ analysis_root_dir = {
   ~ (leaf_node | "outlines" ~ sep ~ leaf_node?) 
 } 
 
-backend_root_dir = {
+backend_root_dir = _{
   batch_id
   ~ sep
   ~ plate_id
@@ -79,7 +81,7 @@ backend_root_dir = {
   ~ leaf_node?
 } 
 
-load_data_csv_root_dir = {
+load_data_csv_root_dir = _{
   batch_id
   ~ sep
   ~ plate_id
@@ -87,13 +89,13 @@ load_data_csv_root_dir = {
   ~ leaf_node?
 } 
 
-metadata_root_dir = {
+metadata_root_dir = _{
   ( "external_metadata" ~ sep ~ leaf_node? )
   | "platemaps" ~ sep ~ plate_id ~ sep ~ ("platemaps" ~ sep ~ leaf_node? | leaf_node)
   | plate_id ~ sep ~ leaf_node?
 } 
 
-profiles_root_dir = {
+profiles_root_dir = _{
   batch_id
   ~ sep
   ~ plate_id
@@ -101,7 +103,7 @@ profiles_root_dir = {
   ~ leaf_node?
 }
 
-assaydev_root_dir = {
+assaydev_root_dir = _{
   batch_id
   ~ sep
   ~ plate_id
@@ -109,7 +111,7 @@ assaydev_root_dir = {
   ~ leaf_node?
 } 
 
-embeddings_root_dir = {
+embeddings_root_dir = _{
   batch_id
   ~ sep
   ~ plate_id
@@ -117,7 +119,7 @@ embeddings_root_dir = {
   ~ leaf_node?
 } 
 
-pipelines_root_dir = {
+pipelines_root_dir = _{
   batch_id
   ~ sep
   ~ plate_id
@@ -125,7 +127,7 @@ pipelines_root_dir = {
   ~ leaf_node?
 }
 
-qc_root_dir = {
+qc_root_dir = _{
   "heatmap"
   ~ sep
   ~ batch_id
@@ -135,7 +137,7 @@ qc_root_dir = {
   ~ leaf_node?
 } 
 
-segmentation_root_dir = {
+segmentation_root_dir = _{
   software_hash
   ~ sep
   ~ ("model" | "training" | "outlines") ~ sep
@@ -146,7 +148,15 @@ segmentation_root_dir = {
   ~ leaf_node?
 } 
 
-software_root_dir = {
+software_root_dir = _{
+  batch_id
+  ~ sep
+  ~ plate_id
+  ~ sep
+  ~ leaf_node?
+} 
+
+scratch_root_dir = _{
   batch_id
   ~ sep
   ~ plate_id
@@ -155,26 +165,26 @@ software_root_dir = {
 } 
 
 // Workspace DL substructures
-workspace_dl_root_dir = {
+workspace_dl_root_dir = _{
   ( "collated" ~ sep ~ collated_root_dir )
   | ( "consensus" ~ sep ~ consensus_root_dir )
   | ( "embeddings" ~ sep ~ dl_embeddings_root_dir )
   | ( "profiles" ~ sep ~ dl_profiles_root_dir )
 } 
 
-collated_root_dir = {
+collated_root_dir = _{
   model_id
   ~ sep
   ~ leaf_node?
 }
 
-consensus_root_dir = {
+consensus_root_dir = _{
   model_id
   ~ sep
   ~ leaf_node?
 }
 
-dl_embeddings_root_dir = {
+dl_embeddings_root_dir = _{
   model_id
   ~ sep
   ~ batch_id
@@ -186,7 +196,7 @@ dl_embeddings_root_dir = {
   ~ leaf_node?
 }
 
-dl_profiles_root_dir = {
+dl_profiles_root_dir = _{
   model_id
   ~ sep
   ~ batch_id
@@ -196,7 +206,7 @@ dl_profiles_root_dir = {
   ~ leaf_node? 
 }
 
-
+ 
 // Common substructures
 sep = { "/" }
 images = { "images" }
@@ -211,12 +221,12 @@ site_id = { allowed_names }
 well_site_id = { well_id ~ "-" ~ site_id }
 plate_well_site_id = { allowed_names }
 model_id = { allowed_names }
-leaf_node = { filename ~ "." ~ extension }
+leaf_node = { ( filename ~ "." ~ extension) }
+// jump_pattern_01 = { "r" (ASCII_DIGIT)+ "c" (ASCII_DIGIT)+ "f" site_id "-" }
 filename = { allowed_names }
 extension = { allowed_names }
 software_hash = { software ~ "_" ~ hash }
 software = { allowed_names }
 hash = { allowed_names }
 allowed_names = { ( ASCII_ALPHANUMERIC | "_" | "-" | " " )+ }
-
 
