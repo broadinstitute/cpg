@@ -164,4 +164,5 @@ cython_debug/
 .direnv
 scratch
 data
-!cpgweb/src/lib
+
+EM_notes.rtf
