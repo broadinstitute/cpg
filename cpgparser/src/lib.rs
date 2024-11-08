@@ -1,6 +1,7 @@
 use pyo3::{
     exceptions::PyValueError,
-    prelude::{pyfunction, pymodule, wrap_pyfunction, PyModule, PyResult, Python},
+    types::PyModuleMethods,
+    prelude::{pyfunction, pymodule, wrap_pyfunction, PyModule, PyResult, Python, Bound},
 };
 use std::collections::HashMap;
 use std::fmt;
@@ -55,7 +56,7 @@ fn parse_prefix_allow_threads(py: Python<'_>, prefix: String) -> PyResult<HashMa
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn cpgparser(_py: Python, m: &PyModule) -> PyResult<()> {
+fn cpgparser(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(parse_prefix, m)?)?;
     m.add_function(wrap_pyfunction!(parse_prefix_allow_threads, m)?)?;
     Ok(())
@@ -66,9 +67,17 @@ mod tests {
     use crate::parse_prefix;
 
     #[test]
-    fn check_smaple_1() {
+    fn check_smaple_001() {
         let prefix: String = "cpg0000-jump-pilot/source_4/images/2020_11_04_CPJUMP1/illum/BR00116991/BR00116991_IllumHighZBF.npy".to_string();
-        parse_prefix(prefix);
+        let _ = parse_prefix(prefix);
+        // assert_eq!()
+    }
+
+    #[test]
+    fn check_smaple_002() {
+        let prefix: String = "cpg0037-oasis/axiom/workspace/scratch/prod_25/plate_41002688/biochem.parquet".to_string();
+        let res = parse_prefix(prefix);
+        println!("{:?}", res);
         // assert_eq!()
     }
 }

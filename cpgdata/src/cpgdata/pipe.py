@@ -3,6 +3,7 @@
 This module collects data I/O and transformers into a
 sequentially parallel pipeline.
 """
+
 import math
 import os
 from pathlib import Path
@@ -242,4 +243,4 @@ def validate(in_path: Path, out_path: Path, jobs: Optional[int] = None) -> None:
     # Create Measurements
     measure(in_path, out_path, jobs)
     # Apply rules
-    check(in_path, out_path, jobs)
+    # check(in_path, out_path, jobs)

@@ -46,6 +46,7 @@ def sync(out: str, bucket: str, prefix: str, force: bool, debug: bool) -> None:
         Force re-sync of all index files.
     debug : bool
         Run in debug mode.
+
     """
     sync_s3_prefix(bucket, prefix, Path(out))
 
